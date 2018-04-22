@@ -59,6 +59,10 @@ dependencies {
     implementation deps.daggerAndroid.runtime
     annotationProcessor deps.daggerAndroid.compiler
 
+    // Rx
+    implementation deps.rx.java
+    implementation deps.rx.android
+
     // Leak Canary
     debugImplementation deps.leakCanary.real
     releaseImplementation deps.leakCanary.noOp
