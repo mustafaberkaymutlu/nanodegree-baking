@@ -49,6 +49,7 @@ dependencies {
     // Retrofit
     implementation deps.retrofit.base
     implementation deps.retrofit.gson
+    implementation deps.retrofit.rxadapter
     implementation deps.okHttpLogginInterceptor
 
     // Dagger
