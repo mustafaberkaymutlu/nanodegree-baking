@@ -1,7 +1,8 @@
 package net.epictimes.nanodegreebaking.di;
 
-import net.epictimes.nanodegreebaking.features.recipe_list.MainActivity;
 import net.epictimes.nanodegreebaking.di.scope.ActivityScoped;
+import net.epictimes.nanodegreebaking.features.recipe_list.RecipeListActivity;
+import net.epictimes.nanodegreebaking.features.recipe_list.RecipeListActivityModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -13,7 +14,7 @@ import dagger.android.ContributesAndroidInjector;
 abstract class ActivityBuilderModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector
-    abstract MainActivity contributeMainActivityInjector();
+    @ContributesAndroidInjector(modules = RecipeListActivityModule.class)
+    abstract RecipeListActivity contributeMainActivityInjector();
 
 }
