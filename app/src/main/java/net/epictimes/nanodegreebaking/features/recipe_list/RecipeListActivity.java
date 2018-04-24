@@ -1,5 +1,6 @@
 package net.epictimes.nanodegreebaking.features.recipe_list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.Recipe;
 import net.epictimes.nanodegreebaking.features.BaseActivity;
+import net.epictimes.nanodegreebaking.features.recipe_detail.RecipeDetailActivity;
 
 import java.util.List;
 
@@ -27,11 +29,13 @@ public class RecipeListActivity extends BaseActivity<RecipeListContract.View, Re
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe_list);
 
         final RecyclerView recyclerViewRecipes = findViewById(R.id.recyclerViewRecipes);
 
         recyclerViewAdapter = new RecipeRecyclerViewAdapter();
+
+        recyclerViewAdapter.setRecipeClickListener(recipe -> presenter.userClickedRecipe(recipe));
 
         recyclerViewRecipes.setHasFixedSize(true);
         recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
@@ -49,5 +53,11 @@ public class RecipeListActivity extends BaseActivity<RecipeListContract.View, Re
     @Override
     public void displayRecipes(final List<Recipe> recipes) {
         recyclerViewAdapter.addAll(recipes);
+    }
+
+    @Override
+    public void goToRecipeDetail(final Recipe recipe) {
+        final Intent detailIntent = RecipeDetailActivity.newIntent(this, recipe.getId());
+        startActivity(detailIntent);
     }
 }

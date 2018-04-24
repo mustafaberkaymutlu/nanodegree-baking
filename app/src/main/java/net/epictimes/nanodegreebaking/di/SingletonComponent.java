@@ -15,6 +15,7 @@ import dagger.android.AndroidInjectionModule;
  */
 @Singleton
 @Component(modules = {
+        SingletonModule.class,
         RemoteDataSourceModule.class,
         RepositoryModule.class,
         AndroidInjectionModule.class,

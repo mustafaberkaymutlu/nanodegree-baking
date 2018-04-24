@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.util.ItemClickListener;
 
 import io.reactivex.annotations.NonNull;
 
@@ -18,10 +19,12 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView textViewRecipeName;
 
-    RecipeViewHolder(final View itemView) {
+    RecipeViewHolder(final View itemView, final ItemClickListener itemClickListener) {
         super(itemView);
 
         textViewRecipeName = itemView.findViewById(R.id.textViewRecipeName);
+
+        itemView.setOnClickListener(v -> itemClickListener.onItemClicked(getAdapterPosition()));
     }
 
     void bindTo(@NonNull Recipe recipe) {

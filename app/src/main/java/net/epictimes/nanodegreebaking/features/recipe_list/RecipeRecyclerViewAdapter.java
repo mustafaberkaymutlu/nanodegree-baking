@@ -2,6 +2,7 @@ package net.epictimes.nanodegreebaking.features.recipe_list;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,26 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeViewHo
 
     private final List<Recipe> recipeList = new ArrayList<>();
 
+    @Nullable
+    private RecipeClickListener recipeClickListener;
+
+    public interface RecipeClickListener {
+
+        void onRecipeClicked(@NonNull Recipe recipe);
+
+    }
+
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         final Context context = parent.getContext();
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(RecipeViewHolder.LAYOUT_ID, parent, false);
-        return new RecipeViewHolder(view);
+        return new RecipeViewHolder(view, adapterPosition -> {
+            if (recipeClickListener != null) {
+                recipeClickListener.onRecipeClicked(recipeList.get(adapterPosition));
+            }
+        });
     }
 
     @Override
@@ -46,4 +60,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeViewHo
         notifyItemRangeInserted(previousSize, newItems.size());
     }
 
+    public void setRecipeClickListener(@Nullable final RecipeClickListener recipeClickListener) {
+        this.recipeClickListener = recipeClickListener;
+    }
 }

@@ -3,6 +3,7 @@ package net.epictimes.nanodegreebaking.features.recipe_list;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import net.epictimes.nanodegreebaking.data.RecipeDataSource;
+import net.epictimes.nanodegreebaking.data.model.Recipe;
 import net.epictimes.nanodegreebaking.di.qualifier.Repository;
 
 import javax.inject.Inject;
@@ -23,7 +24,7 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
-    public RecipeListPresenter() {
+    RecipeListPresenter() {
     }
 
     @Override
@@ -31,6 +32,11 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
         final Disposable disposable = recipeRepository.getRecipes()
                                                       .subscribe(recipes -> ifViewAttached(view -> view.displayRecipes(recipes)));
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void userClickedRecipe(final Recipe recipe) {
+        ifViewAttached(view -> view.goToRecipeDetail(recipe));
     }
 
     @Override

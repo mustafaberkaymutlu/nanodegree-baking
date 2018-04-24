@@ -16,11 +16,15 @@ public interface RecipeListContract {
 
         void displayRecipes(List<Recipe> recipes);
 
+        void goToRecipeDetail(Recipe recipe);
+
     }
 
     interface Presenter extends MvpPresenter<View> {
 
         void getRecipes();
+
+        void userClickedRecipe(Recipe recipe);
 
     }
 

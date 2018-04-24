@@ -42,6 +42,7 @@ dependencies {
     implementation deps.support.constraintLayout
     implementation deps.support.recyclerView
     implementation deps.support.cardView
+    implementation deps.support.design
 
     // Mosby
     implementation deps.mosby.core
