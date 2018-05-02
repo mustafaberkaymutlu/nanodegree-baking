@@ -12,11 +12,15 @@ public interface StepDetailContract {
 
     interface View extends MvpView {
 
+        void displayStepDetail(Step step);
+
+        void displayStepError();
+
     }
 
     interface Presenter extends MvpPresenter<View> {
 
-        void displayStep(Step step);
+        void displayStep(final String recipeId, final String stepId);
 
     }
 

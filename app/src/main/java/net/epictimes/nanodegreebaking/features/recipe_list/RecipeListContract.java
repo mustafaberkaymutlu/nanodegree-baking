@@ -16,6 +16,8 @@ public interface RecipeListContract {
 
         void displayRecipes(List<Recipe> recipes);
 
+        void displayRecipesError();
+
         void goToRecipeDetail(Recipe recipe);
 
     }

@@ -19,9 +19,10 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class RecipeDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class RecipeDetailActivity extends AppCompatActivity
+        implements HasSupportFragmentInjector, StepListFragment.Listener {
 
-    private static final String KEY_ID = "id";
+    private static final String KEY_RECIPE_ID = "recipe_id";
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
@@ -30,9 +31,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements HasSuppor
     @Inject
     boolean isTablet;
 
-    public static Intent newIntent(@NonNull Context context, @NonNull String id) {
+    private String recipeId;
+
+    public static Intent newIntent(@NonNull Context context, @NonNull String recipeId) {
         final Intent intent = new Intent(context, RecipeDetailActivity.class);
-        intent.putExtra(KEY_ID, id);
+        intent.putExtra(KEY_RECIPE_ID, recipeId);
         return intent;
     }
 
@@ -41,6 +44,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements HasSuppor
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
+        recipeId = getIntent().getStringExtra(KEY_RECIPE_ID);
 
         if (isTablet) {
             attachTabletFragments();
@@ -56,14 +61,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements HasSuppor
         if (isContentFrameListEmpty) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.contentFrame_list, StepListFragment.newInstance())
+                    .add(R.id.contentFrame_list, StepListFragment.newInstance(recipeId))
                     .commit();
         }
 
         if (isContentFrameDetailEmpty) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.contentFrame_detail, StepDetailFragment.newInstance())
+                    .add(R.id.contentFrame_detail, StepDetailFragment.newInstance(recipeId, null))
                     .commit();
         }
     }
@@ -74,9 +79,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements HasSuppor
         if (isContentFrameEmpty) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.contentFrame, StepListFragment.newInstance())
+                    .add(R.id.contentFrame, StepListFragment.newInstance(recipeId))
                     .commit();
         }
+    }
+
+    @Override
+    public void openStepDetail(final String stepId) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.contentFrame, StepDetailFragment.newInstance(recipeId, stepId))
+                .addToBackStack(null)
+                .commit();
     }
 
     private boolean isFragmentDetached(int fragmentId) {

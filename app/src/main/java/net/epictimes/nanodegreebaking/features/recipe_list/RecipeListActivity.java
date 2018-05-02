@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.Recipe;
@@ -53,6 +54,11 @@ public class RecipeListActivity extends BaseActivity<RecipeListContract.View, Re
     @Override
     public void displayRecipes(final List<Recipe> recipes) {
         recyclerViewAdapter.addAll(recipes);
+    }
+
+    @Override
+    public void displayRecipesError() {
+        Toast.makeText(this, R.string.error_recipes, Toast.LENGTH_SHORT).show();
     }
 
     @Override

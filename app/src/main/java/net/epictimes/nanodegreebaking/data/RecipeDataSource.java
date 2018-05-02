@@ -13,4 +13,6 @@ public interface RecipeDataSource {
 
     Flowable<List<Recipe>> getRecipes();
 
+    Flowable<Recipe> getRecipe(final String recipeId);
+
 }

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Nanodegree Baking</string>
+    <string name="error_steps">Error while getting steps</string>
+    <string name="error_step">Error while displaying step</string>
+    <string name="error_recipes">Error while displaying recipes</string>
 </resources>

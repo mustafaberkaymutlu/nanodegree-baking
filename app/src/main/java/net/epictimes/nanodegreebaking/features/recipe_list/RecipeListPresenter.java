@@ -8,6 +8,7 @@ import net.epictimes.nanodegreebaking.di.qualifier.Repository;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -30,7 +31,9 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
     @Override
     public void getRecipes() {
         final Disposable disposable = recipeRepository.getRecipes()
-                                                      .subscribe(recipes -> ifViewAttached(view -> view.displayRecipes(recipes)));
+                                                      .observeOn(AndroidSchedulers.mainThread())
+                                                      .subscribe(recipes -> ifViewAttached(view -> view.displayRecipes(recipes)),
+                                                                 throwable -> ifViewAttached(RecipeListContract.View::displayRecipesError));
         compositeDisposable.add(disposable);
     }
 
@@ -43,6 +46,6 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
     public void destroy() {
         super.destroy();
 
-        compositeDisposable.dispose();
+        compositeDisposable.clear();
     }
 }
