@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.epictimes.nanodegreebaking.R;
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
 import net.epictimes.nanodegreebaking.util.ItemClickListener;
 
 import io.reactivex.annotations.NonNull;

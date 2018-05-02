@@ -1,7 +1,8 @@
 package net.epictimes.nanodegreebaking.data.remote;
 
 import net.epictimes.nanodegreebaking.data.RecipeDataSource;
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.RecipeMapper;
 
 import java.util.List;
 
@@ -19,12 +20,19 @@ class RecipesRemoteDataSource implements RecipeDataSource {
     Services services;
 
     @Inject
+    RecipeMapper recipeMapper;
+
+    @Inject
     RecipesRemoteDataSource() {
     }
 
     @Override
     public Flowable<List<Recipe>> getRecipes() {
         return services.getRecipes()
+                       .flatMapIterable(recipeRaws -> recipeRaws)
+                       .map(recipeMapper)
+                       .toList()
+                       .toFlowable()
                        .subscribeOn(Schedulers.io());
     }
 

@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import net.epictimes.nanodegreebaking.R;
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
 import net.epictimes.nanodegreebaking.features.BaseActivity;
 import net.epictimes.nanodegreebaking.features.recipe_detail.RecipeDetailActivity;
 

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
 
 import java.util.ArrayList;
 import java.util.Collection;

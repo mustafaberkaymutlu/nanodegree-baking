@@ -3,7 +3,8 @@ package net.epictimes.nanodegreebaking.features.recipe_list;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.RecipeRaw;
 
 import java.util.List;
 

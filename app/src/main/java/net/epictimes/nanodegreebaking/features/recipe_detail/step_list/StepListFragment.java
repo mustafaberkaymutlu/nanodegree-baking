@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import net.epictimes.nanodegreebaking.R;
-import net.epictimes.nanodegreebaking.data.model.Step;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
 
 import java.util.List;
@@ -87,7 +86,7 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new StepRecyclerViewAdapter();
 
-        adapter.setStepClickListener(step -> presenter.userClickedRecipeStep(recipeId, step));
+        adapter.setStepClickListener(step -> presenter.userClickedRecipeStep(recipeId, step.getId()));
 
         recyclerViewSteps.setLayoutManager(linearLayoutManager);
         recyclerViewSteps.setAdapter(adapter);
@@ -97,7 +96,7 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
     }
 
     @Override
-    public void displaySteps(final List<Step> steps) {
+    public void displaySteps(final List<StepListItemViewEntity> steps) {
         adapter.addAll(steps);
     }
 

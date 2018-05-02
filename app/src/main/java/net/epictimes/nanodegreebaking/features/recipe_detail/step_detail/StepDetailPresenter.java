@@ -3,8 +3,8 @@ package net.epictimes.nanodegreebaking.features.recipe_detail.step_detail;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import net.epictimes.nanodegreebaking.data.RecipeDataSource;
-import net.epictimes.nanodegreebaking.data.model.Recipe;
-import net.epictimes.nanodegreebaking.data.model.Step;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
+import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.di.qualifier.Repository;
 
 import javax.inject.Inject;

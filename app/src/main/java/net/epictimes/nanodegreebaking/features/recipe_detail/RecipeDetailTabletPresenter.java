@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
-import net.epictimes.nanodegreebaking.data.model.Step;
 import net.epictimes.nanodegreebaking.features.recipe_detail.step_detail.StepDetailContract;
 import net.epictimes.nanodegreebaking.features.recipe_detail.step_list.StepListContract;
 
@@ -27,8 +26,8 @@ public class RecipeDetailTabletPresenter {
         }
 
         @Override
-        public void userClickedRecipeStep(final String recipeId, final Step step) {
-            actualDetailPresenter.displayStep(recipeId, step.getId());
+        public void userClickedRecipeStep(final String recipeId, final String stepId) {
+            actualDetailPresenter.displayStep(recipeId, stepId);
         }
 
         @Override

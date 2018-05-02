@@ -1,11 +1,11 @@
-package net.epictimes.nanodegreebaking.data.model;
+package net.epictimes.nanodegreebaking.data.model.step;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
  Created by Mustafa Berkay Mutlu on 22.04.18.
  */
-public class Step {
+public class StepRaw {
 
     @SerializedName("id")
     private String id;

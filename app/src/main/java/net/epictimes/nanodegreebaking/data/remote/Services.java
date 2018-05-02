@@ -1,6 +1,6 @@
 package net.epictimes.nanodegreebaking.data.remote;
 
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.RecipeRaw;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ import retrofit2.http.GET;
 public interface Services {
 
     @GET("/android-baking-app-json")
-    Flowable<List<Recipe>> getRecipes();
+    Flowable<List<RecipeRaw>> getRecipes();
 
 }

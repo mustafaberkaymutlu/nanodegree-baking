@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.epictimes.nanodegreebaking.data.model.Step;
+import net.epictimes.nanodegreebaking.data.model.step.Step;
+import net.epictimes.nanodegreebaking.data.model.step.StepRaw;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,14 +20,14 @@ import java.util.List;
  */
 public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder> {
 
-    private final List<Step> stepList = new ArrayList<>();
+    private final List<StepListItemViewEntity> stepList = new ArrayList<>();
 
     @Nullable
     private StepClickListener stepClickListener;
 
     interface StepClickListener {
 
-        void onStepClicked(@NonNull Step step);
+        void onStepClicked(@NonNull StepListItemViewEntity step);
 
     }
 
@@ -45,7 +46,7 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final StepViewHolder holder, final int position) {
-        final Step step = stepList.get(position);
+        final StepListItemViewEntity step = stepList.get(position);
         holder.bind(step);
     }
 
@@ -54,7 +55,7 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder
         return stepList.size();
     }
 
-    void addAll(Collection<Step> newItems) {
+    void addAll(Collection<StepListItemViewEntity> newItems) {
         final int previousSize = stepList.size();
         stepList.addAll(newItems);
         notifyItemRangeInserted(previousSize, newItems.size());

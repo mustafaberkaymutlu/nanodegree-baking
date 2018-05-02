@@ -1,11 +1,11 @@
-package net.epictimes.nanodegreebaking.data.model;
+package net.epictimes.nanodegreebaking.data.model.ingredient;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
  Created by Mustafa Berkay Mutlu on 22.04.18.
  */
-public class Ingredient {
+public class IngredientRaw {
 
     @SerializedName("measure")
     private String measure;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.epictimes.nanodegreebaking.R;
-import net.epictimes.nanodegreebaking.data.model.Step;
+import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
 
 import javax.inject.Inject;

@@ -3,8 +3,6 @@ package net.epictimes.nanodegreebaking.features.recipe_detail.step_list;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-import net.epictimes.nanodegreebaking.data.model.Step;
-
 import java.util.List;
 
 /**
@@ -14,7 +12,7 @@ public interface StepListContract {
 
     interface View extends MvpView {
 
-        void displaySteps(List<Step> steps);
+        void displaySteps(List<StepListItemViewEntity> steps);
 
         void displayStepError();
 
@@ -25,7 +23,7 @@ public interface StepListContract {
 
         void getRecipeSteps(String recipeId);
 
-        void userClickedRecipeStep(final String recipeId, Step step);
+        void userClickedRecipeStep(final String recipeId, String stepId);
 
     }
 

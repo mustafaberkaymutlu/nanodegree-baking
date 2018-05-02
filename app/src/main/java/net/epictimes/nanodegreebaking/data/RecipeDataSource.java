@@ -1,6 +1,6 @@
 package net.epictimes.nanodegreebaking.data;
 
-import net.epictimes.nanodegreebaking.data.model.Recipe;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
 
 import java.util.List;
 

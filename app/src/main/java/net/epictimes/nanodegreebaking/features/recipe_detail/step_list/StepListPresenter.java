@@ -3,11 +3,14 @@ package net.epictimes.nanodegreebaking.features.recipe_detail.step_list;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import net.epictimes.nanodegreebaking.data.RecipeDataSource;
-import net.epictimes.nanodegreebaking.data.model.Step;
+import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
 import net.epictimes.nanodegreebaking.di.qualifier.Repository;
 
 import javax.inject.Inject;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -41,13 +44,18 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View>
         final Disposable disposable = repository.getRecipe(recipeId)
                                                 .subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(recipe -> ifViewAttached(view -> view.displaySteps(recipe.getSteps())),
-                                                           throwable -> ifViewAttached(view -> ifViewAttached(StepListContract.View::displayStepError)));
+                                                .flatMapIterable(Recipe::getSteps)
+                                                // TODO increase position
+                                                .map(step -> new StepListItemViewEntity(step.getId(), step.getShortDescription(), 0))
+                                                .toList()
+                                                .toFlowable()
+                                                .subscribe(stepListItemViewEntities -> ifViewAttached(view -> view.displaySteps(stepListItemViewEntities)),
+                                                               throwable -> ifViewAttached(view -> ifViewAttached(StepListContract.View::displayStepError)));
         compositeDisposable.add(disposable);
     }
 
     @Override
-    public void userClickedRecipeStep(final String recipeId, final Step step) {
-        ifViewAttached(view -> view.openStepDetail(step.getId()));
+    public void userClickedRecipeStep(final String recipeId, final String stepId) {
+        ifViewAttached(view -> view.openStepDetail(stepId));
     }
 }
