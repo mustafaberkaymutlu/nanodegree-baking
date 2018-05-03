@@ -3,12 +3,14 @@ package net.epictimes.nanodegreebaking.features.recipe_list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
+import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
 import net.epictimes.nanodegreebaking.features.BaseActivity;
 import net.epictimes.nanodegreebaking.features.recipe_detail.RecipeDetailActivity;
 
@@ -21,8 +23,14 @@ import dagger.android.AndroidInjection;
 public class RecipeListActivity extends BaseActivity<RecipeListContract.View, RecipeListContract.Presenter>
         implements RecipeListContract.View {
 
+    private static final int TABLET_SPAN_COUNT = 3;
+
     @Inject
     RecipeListContract.Presenter recipePresenter;
+
+    @IsTablet
+    @Inject
+    boolean isTablet;
 
     private RecipeRecyclerViewAdapter recyclerViewAdapter;
 
@@ -39,7 +47,7 @@ public class RecipeListActivity extends BaseActivity<RecipeListContract.View, Re
         recyclerViewAdapter.setRecipeClickListener(recipe -> presenter.userClickedRecipe(recipe));
 
         recyclerViewRecipes.setHasFixedSize(true);
-        recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewRecipes.setLayoutManager(getLayout());
         recyclerViewRecipes.setAdapter(recyclerViewAdapter);
 
         presenter.getRecipes();
@@ -65,5 +73,14 @@ public class RecipeListActivity extends BaseActivity<RecipeListContract.View, Re
     public void goToRecipeDetail(final Recipe recipe) {
         final Intent detailIntent = RecipeDetailActivity.newIntent(this, recipe.getId());
         startActivity(detailIntent);
+    }
+
+    @NonNull
+    private LinearLayoutManager getLayout() {
+        if (isTablet) {
+            return new GridLayoutManager(this, TABLET_SPAN_COUNT);
+        } else {
+            return new LinearLayoutManager(this);
+        }
     }
 }

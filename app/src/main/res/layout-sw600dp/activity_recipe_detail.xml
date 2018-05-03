@@ -40,13 +40,13 @@
                 android:id="@+id/contentFrame_list"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="5"/>
 
             <FrameLayout
                 android:id="@+id/contentFrame_detail"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="8"/>
         </LinearLayout>
 
     </LinearLayout>
