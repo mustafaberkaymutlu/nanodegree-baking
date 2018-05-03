@@ -1,5 +1,7 @@
 package net.epictimes.nanodegreebaking.data.model.ingredient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.inject.Inject;
 
 import io.reactivex.functions.Function;
@@ -25,6 +27,23 @@ public class IngredientMapper implements Function<IngredientRaw, Ingredient> {
     }
 
     private void validateFields(final IngredientRaw ingredientRaw) {
-        // TODO validate fields
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        if (StringUtils.isBlank(ingredientRaw.getMeasure())) {
+            stringBuilder.append("measure cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(ingredientRaw.getIngredientName())) {
+            stringBuilder.append("ingredient cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(ingredientRaw.getQuantity())) {
+            stringBuilder.append("quantity cannot be empty. ");
+        }
+
+        final String message = stringBuilder.toString();
+        if (StringUtils.isNotBlank(message)) {
+            throw new IllegalStateException(message);
+        }
     }
 }

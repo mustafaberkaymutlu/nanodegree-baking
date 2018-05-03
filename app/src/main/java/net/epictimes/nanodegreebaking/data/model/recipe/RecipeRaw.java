@@ -1,5 +1,7 @@
 package net.epictimes.nanodegreebaking.data.model.recipe;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import net.epictimes.nanodegreebaking.data.model.ingredient.IngredientRaw;
@@ -12,11 +14,11 @@ import java.util.List;
  */
 public class RecipeRaw {
 
-    @SerializedName("ingredients")
-    private List<IngredientRaw> ingredients;
-
     @SerializedName("id")
     private String id;
+
+    @SerializedName("ingredients")
+    private List<IngredientRaw> ingredients;
 
     @SerializedName("servings")
     private String servings;
@@ -24,57 +26,36 @@ public class RecipeRaw {
     @SerializedName("name")
     private String name;
 
+    @Nullable
     @SerializedName("image")
     private String image;
 
     @SerializedName("steps")
     private List<StepRaw> steps;
 
-    public List<IngredientRaw> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(final List<IngredientRaw> ingredients) {
-        this.ingredients = ingredients;
-    }
-
     public String getId() {
         return id;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public List<IngredientRaw> getIngredients() {
+        return ingredients;
     }
 
     public String getServings() {
         return servings;
     }
 
-    public void setServings(final String servings) {
-        this.servings = servings;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
+    @Nullable
     public String getImage() {
         return image;
-    }
-
-    public void setImage(final String image) {
-        this.image = image;
     }
 
     public List<StepRaw> getSteps() {
         return steps;
     }
 
-    public void setSteps(final List<StepRaw> steps) {
-        this.steps = steps;
-    }
 }

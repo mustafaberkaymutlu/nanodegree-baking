@@ -70,6 +70,10 @@ dependencies {
     debugImplementation deps.leakCanary.real
     releaseImplementation deps.leakCanary.noOp
 
+    // Utils
+    implementation deps.apacheCommon.lang
+    implementation deps.apacheCommon.collections
+
     // Others
     implementation deps.timber
 

@@ -1,5 +1,7 @@
 package net.epictimes.nanodegreebaking.data.model.recipe;
 
+import android.support.annotation.Nullable;
+
 import net.epictimes.nanodegreebaking.data.model.ingredient.Ingredient;
 import net.epictimes.nanodegreebaking.data.model.step.Step;
 
@@ -18,6 +20,7 @@ public class Recipe {
 
     private String name;
 
+    @Nullable
     private String image;
 
     private List<Step> steps;
@@ -38,6 +41,7 @@ public class Recipe {
         return name;
     }
 
+    @Nullable
     public String getImage() {
         return image;
     }
@@ -52,7 +56,10 @@ public class Recipe {
         private String id;
         private String servings;
         private String name;
+
+        @Nullable
         private String image;
+
         private List<Step> steps;
 
         private RecipeBuilder() {}
@@ -79,7 +86,7 @@ public class Recipe {
             return this;
         }
 
-        public RecipeBuilder withImage(String image) {
+        public RecipeBuilder withImage(@Nullable String image) {
             this.image = image;
             return this;
         }

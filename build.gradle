@@ -66,6 +66,10 @@ buildscript {
                     'junit': "junit:junit:4.12",
                     'mockito': "org.mockito:mockito-core:2.10.0",
             ],
+            'apacheCommon':[
+                    'lang': "org.apache.commons:commons-lang3:3.7",
+                    'collections': "org.apache.commons:commons-collections4:4.1",
+            ],
             'okHttpLogginInterceptor': 'com.squareup.okhttp3:logging-interceptor:3.9.0',
             'timber': 'com.jakewharton.timber:timber:4.6.1',
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',

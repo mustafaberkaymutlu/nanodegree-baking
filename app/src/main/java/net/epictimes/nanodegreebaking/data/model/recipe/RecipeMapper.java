@@ -7,6 +7,9 @@ import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.data.model.step.StepMapper;
 import net.epictimes.nanodegreebaking.data.model.step.StepRaw;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +56,10 @@ public class RecipeMapper implements Function<RecipeRaw, Recipe> {
         return steps;
     }
 
-    private List<Ingredient> mapIngredients(final List<IngredientRaw> ingredientRaws) throws Exception {
+    private List<Ingredient> mapIngredients(final List<IngredientRaw> rawIngredients) {
         final List<Ingredient> ingredients = new ArrayList<>();
 
-        for (final IngredientRaw ingredientRaw : ingredientRaws) {
+        for (final IngredientRaw ingredientRaw : rawIngredients) {
             ingredients.add(ingredientMapper.apply(ingredientRaw));
         }
 
@@ -64,6 +67,31 @@ public class RecipeMapper implements Function<RecipeRaw, Recipe> {
     }
 
     private void validateFields(final RecipeRaw recipeRaw) {
-        // TODO validate fields
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        if (StringUtils.isBlank(recipeRaw.getId())) {
+            stringBuilder.append("id cannot be empty, ");
+        }
+
+        if (CollectionUtils.isEmpty(recipeRaw.getIngredients())) {
+            stringBuilder.append("ingredients cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(recipeRaw.getServings())) {
+            stringBuilder.append("servings cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(recipeRaw.getName())) {
+            stringBuilder.append("name cannot be empty, ");
+        }
+
+        if (CollectionUtils.isEmpty(recipeRaw.getSteps())) {
+            stringBuilder.append("steps cannot be empty. ");
+        }
+
+        final String message = stringBuilder.toString();
+        if (StringUtils.isNotBlank(message)) {
+            throw new IllegalStateException(message);
+        }
     }
 }

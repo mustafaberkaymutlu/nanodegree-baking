@@ -1,5 +1,7 @@
 package net.epictimes.nanodegreebaking.data.model.step;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -16,9 +18,11 @@ public class StepRaw {
     @SerializedName("description")
     private String description;
 
+    @Nullable
     @SerializedName("videoURL")
     private String videoURL;
 
+    @Nullable
     @SerializedName("thumbnailURL")
     private String thumbnailURL;
 
@@ -26,39 +30,22 @@ public class StepRaw {
         return id;
     }
 
-    public void setId(final String id) {
-        this.id = id;
-    }
-
     public String getShortDescription() {
         return shortDescription;
-    }
-
-    public void setShortDescription(final String shortDescription) {
-        this.shortDescription = shortDescription;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
+    @Nullable
     public String getVideoURL() {
         return videoURL;
     }
 
-    public void setVideoURL(final String videoURL) {
-        this.videoURL = videoURL;
-    }
-
+    @Nullable
     public String getThumbnailURL() {
         return thumbnailURL;
     }
 
-    public void setThumbnailURL(final String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
-    }
 }

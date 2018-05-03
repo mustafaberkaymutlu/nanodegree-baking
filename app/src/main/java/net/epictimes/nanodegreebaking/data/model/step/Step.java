@@ -1,5 +1,7 @@
 package net.epictimes.nanodegreebaking.data.model.step;
 
+import android.support.annotation.Nullable;
+
 /**
  Created by Mustafa Berkay Mutlu on 02.05.18.
  */
@@ -11,8 +13,10 @@ public class Step {
 
     private String description;
 
+    @Nullable
     private String videoURL;
 
+    @Nullable
     private String thumbnailURL;
 
     public String getId() {
@@ -27,10 +31,12 @@ public class Step {
         return description;
     }
 
+    @Nullable
     public String getVideoURL() {
         return videoURL;
     }
 
+    @Nullable
     public String getThumbnailURL() {
         return thumbnailURL;
     }
@@ -40,7 +46,11 @@ public class Step {
         private String id;
         private String shortDescription;
         private String description;
+
+        @Nullable
         private String videoURL;
+
+        @Nullable
         private String thumbnailURL;
 
         public String getId() {
@@ -55,10 +65,12 @@ public class Step {
             return description;
         }
 
+        @Nullable
         public String getVideoURL() {
             return videoURL;
         }
 
+        @Nullable
         public String getThumbnailURL() {
             return thumbnailURL;
         }
@@ -82,12 +94,12 @@ public class Step {
             return this;
         }
 
-        public StepBuilder withVideoURL(String videoURL) {
+        public StepBuilder withVideoURL(@Nullable String videoURL) {
             this.videoURL = videoURL;
             return this;
         }
 
-        public StepBuilder withThumbnailURL(String thumbnailURL) {
+        public StepBuilder withThumbnailURL(@Nullable String thumbnailURL) {
             this.thumbnailURL = thumbnailURL;
             return this;
         }

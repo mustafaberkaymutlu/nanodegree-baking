@@ -1,5 +1,7 @@
 package net.epictimes.nanodegreebaking.data.model.step;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.inject.Inject;
 
 import io.reactivex.functions.Function;
@@ -27,6 +29,23 @@ public class StepMapper implements Function<StepRaw, Step> {
     }
 
     private void validateFields(final StepRaw stepRaw) {
-        // TODO validate fields
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        if (StringUtils.isBlank(stepRaw.getId())) {
+            stringBuilder.append("id cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(stepRaw.getShortDescription())) {
+            stringBuilder.append("shortDescription cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(stepRaw.getDescription())) {
+            stringBuilder.append("description cannot be empty, ");
+        }
+
+        final String message = stringBuilder.toString();
+        if (StringUtils.isNotBlank(message)) {
+            throw new IllegalStateException(message);
+        }
     }
 }
