@@ -3,31 +3,28 @@ package net.epictimes.nanodegreebaking.features.recipe_detail.step_list;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.epictimes.nanodegreebaking.data.model.step.Step;
-import net.epictimes.nanodegreebaking.data.model.step.StepRaw;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  Created by Mustafa Berkay Mutlu on 28.04.18.
  */
-public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder> {
+class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder> {
 
-    private final List<StepListItemViewEntity> stepList = new ArrayList<>();
+    private final List<StepItemViewEntity> stepList = new ArrayList<>();
 
     @Nullable
     private StepClickListener stepClickListener;
 
     interface StepClickListener {
 
-        void onStepClicked(@NonNull StepListItemViewEntity step);
+        void onStepClicked(@NonNull StepItemViewEntity step);
 
     }
 
@@ -46,7 +43,7 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final StepViewHolder holder, final int position) {
-        final StepListItemViewEntity step = stepList.get(position);
+        final StepItemViewEntity step = stepList.get(position);
         holder.bind(step);
     }
 
@@ -55,13 +52,16 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder
         return stepList.size();
     }
 
-    void addAll(Collection<StepListItemViewEntity> newItems) {
-        final int previousSize = stepList.size();
-        stepList.addAll(newItems);
-        notifyItemRangeInserted(previousSize, newItems.size());
+    void update(@NonNull final List<StepItemViewEntity> newItems) {
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new StepListDiffUtilCallback(stepList, newItems));
+
+        this.stepList.clear();
+        this.stepList.addAll(newItems);
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
-    public void setStepClickListener(@Nullable final StepClickListener stepClickListener) {
+    void setItemClickListener(@Nullable final StepClickListener stepClickListener) {
         this.stepClickListener = stepClickListener;
     }
 }
