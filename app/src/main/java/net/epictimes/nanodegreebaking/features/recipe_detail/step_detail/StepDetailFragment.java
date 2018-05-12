@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.util.Util;
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
+import net.epictimes.nanodegreebaking.util.Preconditions;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -88,7 +89,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         textViewStepDescription = view.findViewById(R.id.textViewStepDescription);
         playerView = view.findViewById(R.id.playerView);
 
-        final Bundle args = getArguments();
+        final Bundle args = Preconditions.checkNotNull(getArguments(), "Arguments must not be null. ");
         final String recipeId = args.getString(ARG_RECIPE_ID);
         final String initialStepId = args.getString(ARG_STEP_ID);
 

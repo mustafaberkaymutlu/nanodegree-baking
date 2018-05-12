@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
+import net.epictimes.nanodegreebaking.util.Preconditions;
 
 import javax.inject.Inject;
 
@@ -82,7 +83,7 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Bundle args = getArguments();
+        final Bundle args = Preconditions.checkNotNull(getArguments(), "Arguments must not be null. ");
         final String recipeId = args.getString(ARG_RECIPE_ID);
 
         if (savedInstanceState != null) {
