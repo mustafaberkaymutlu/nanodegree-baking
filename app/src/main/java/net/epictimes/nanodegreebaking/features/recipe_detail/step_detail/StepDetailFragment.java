@@ -38,11 +38,15 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     private static final String ARG_RECIPE_ID = "recipe_id";
     private static final String ARG_STEP_ID = "step_id";
 
+    @Nullable
     private TextView textViewStepDescription;
     private PlayerView playerView;
 
     @Nullable
     private SimpleExoPlayer simpleExoPlayer;
+
+    @Inject
+    StepDetailContract.Presenter stepDetailPresenter;
 
     public static StepDetailFragment newInstance(@Nullable final String recipeId, @Nullable String stepId) {
         final StepDetailFragment stepDetailFragment = new StepDetailFragment();
@@ -52,9 +56,6 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         stepDetailFragment.setArguments(args);
         return stepDetailFragment;
     }
-
-    @Inject
-    StepDetailContract.Presenter stepDetailPresenter;
 
     @NonNull
     @Override
@@ -108,7 +109,9 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
     @Override
     public void displayStepDetail(Step step) {
-        textViewStepDescription.setText(step.getDescription());
+        if (textViewStepDescription != null) {
+            textViewStepDescription.setText(step.getDescription());
+        }
 
         releaseVideoPlayer();
 
