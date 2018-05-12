@@ -37,10 +37,14 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
     private static final String ARG_RECIPE_ID = "recipe_id";
     private static final String ARG_STEP_ID = "step_id";
+    private static final String ARG_VIDEO_POSITION = "video_position";
 
     @Nullable
     private TextView textViewStepDescription;
     private PlayerView playerView;
+
+    private long videoPosition;
+    private String stepId;
 
     @Nullable
     private SimpleExoPlayer simpleExoPlayer;
@@ -48,7 +52,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     @Inject
     StepDetailContract.Presenter stepDetailPresenter;
 
-    public static StepDetailFragment newInstance(@Nullable final String recipeId, @Nullable String stepId) {
+    public static StepDetailFragment newInstance(@NonNull final String recipeId, @Nullable String stepId) {
         final StepDetailFragment stepDetailFragment = new StepDetailFragment();
         final Bundle args = new Bundle();
         args.putString(ARG_RECIPE_ID, recipeId);
@@ -86,9 +90,26 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
         final Bundle args = getArguments();
         final String recipeId = args.getString(ARG_RECIPE_ID);
-        final String stepId = args.getString(ARG_STEP_ID);
+        final String initialStepId = args.getString(ARG_STEP_ID);
+
+        if (savedInstanceState != null) {
+            stepId = savedInstanceState.getString(ARG_STEP_ID, initialStepId);
+            videoPosition = savedInstanceState.getLong(ARG_VIDEO_POSITION, 0);
+        } else {
+            stepId = initialStepId;
+        }
 
         presenter.displayStep(recipeId, stepId);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (simpleExoPlayer != null) {
+            outState.putString(ARG_STEP_ID, stepId);
+            outState.putLong(ARG_VIDEO_POSITION, simpleExoPlayer.getCurrentPosition());
+        }
     }
 
     @Override
@@ -109,6 +130,8 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
     @Override
     public void displayStepDetail(Step step) {
+        this.stepId = step.getId();
+
         if (textViewStepDescription != null) {
             textViewStepDescription.setText(step.getDescription());
         }
@@ -148,12 +171,14 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
         simpleExoPlayer.prepare(mediaSource);
         simpleExoPlayer.setPlayWhenReady(true);
+        simpleExoPlayer.seekTo(videoPosition);
     }
 
     private void releaseVideoPlayer() {
         if (simpleExoPlayer != null) {
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
+            videoPosition = 0;
             simpleExoPlayer = null;
         }
     }

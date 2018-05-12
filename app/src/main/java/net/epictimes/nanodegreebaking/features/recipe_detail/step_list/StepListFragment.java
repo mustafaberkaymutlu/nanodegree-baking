@@ -25,12 +25,18 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
         implements StepListContract.View {
 
     private static final String ARG_RECIPE_ID = "recipe_id";
+    private static final String ARG_SELECTED_ITEM_POSITION = "selected_item_position";
 
     private Listener fragmentListener;
     private StepRecyclerViewAdapter adapter;
 
+    private int selectedItemPosition;
+
     public interface Listener {
 
+        /**
+         * Will be called only on phone layouts.
+         */
         void openStepDetail(String stepId);
 
     }
@@ -79,6 +85,10 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
         final Bundle args = getArguments();
         final String recipeId = args.getString(ARG_RECIPE_ID);
 
+        if (savedInstanceState != null) {
+            selectedItemPosition = savedInstanceState.getInt(ARG_SELECTED_ITEM_POSITION, 0);
+        }
+
         final RecyclerView recyclerViewSteps = view.findViewById(R.id.recyclerViewSteps);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -90,11 +100,20 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
         recyclerViewSteps.setAdapter(adapter);
         recyclerViewSteps.setHasFixedSize(true);
 
-        presenter.getRecipeSteps(recipeId);
+        presenter.getRecipeSteps(recipeId, selectedItemPosition);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(ARG_SELECTED_ITEM_POSITION, selectedItemPosition);
     }
 
     @Override
     public void displaySteps(final StepListViewEntity stepListViewEntity) {
+        this.selectedItemPosition = stepListViewEntity.getSelectedItemPosition();
+
         adapter.update(stepListViewEntity.getStepItemViewEntityList());
     }
 

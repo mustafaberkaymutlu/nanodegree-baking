@@ -33,6 +33,7 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
     private StepListViewEntity stepListViewEntity;
 
     private StepItemViewEntity selectedStep;
+    private int selectedStepPosition;
 
     @Repository
     @Inject
@@ -54,7 +55,9 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
     }
 
     @Override
-    public void getRecipeSteps(final String recipeId) {
+    public void getRecipeSteps(final String recipeId, final int selectedStepPosition) {
+        this.selectedStepPosition = selectedStepPosition;
+
         final Disposable disposable = repository.getRecipe(recipeId)
                                                 .subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,7 +70,7 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
 
     private void updateCache(final StepListViewEntity stepListViewEntity) {
         this.stepListViewEntity = stepListViewEntity;
-        this.selectedStep = stepListViewEntity.getStepItemViewEntityList().get(0);
+        this.selectedStep = stepListViewEntity.getStepItemViewEntityList().get(selectedStepPosition);
     }
 
     private void displaySteps(final StepListViewEntity stepListViewEntity) {
@@ -103,30 +106,25 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
                                                                                    .withIsSelected(true)
                                                                                    .build();
 
-        this.selectedStep = updatedNewClickedStep;
+        final List<StepItemViewEntity> stepItemViewEntityList = stepListViewEntity.getStepItemViewEntityList();
 
-        final int prevPos = IterableUtils.indexOf(stepListViewEntity.getStepItemViewEntityList(),
+        final int prevPos = IterableUtils.indexOf(stepItemViewEntityList,
                                                   it -> it.getId().equals(updatedPreviousClickedStep.getId()));
-        final int newPost = IterableUtils.indexOf(stepListViewEntity.getStepItemViewEntityList(),
+        final int newPos = IterableUtils.indexOf(stepItemViewEntityList,
                                                   it -> it.getId().equals(updatedNewClickedStep.getId()));
 
-        stepListViewEntity.getStepItemViewEntityList().set(prevPos, updatedPreviousClickedStep);
-        stepListViewEntity.getStepItemViewEntityList().set(newPost, updatedNewClickedStep);
+        stepItemViewEntityList.set(prevPos, updatedPreviousClickedStep);
+        stepItemViewEntityList.set(newPos, updatedNewClickedStep);
+
+        this.selectedStep = updatedNewClickedStep;
+        this.selectedStepPosition = newPos;
+        this.stepListViewEntity = new StepListViewEntity(stepItemViewEntityList, selectedStepPosition);
     }
 
     private Publisher<? extends StepListViewEntity> mapToViewEntity(List<Step> steps) {
         final List<StepItemViewEntity> items = new ArrayList<>();
 
-        final Step firstStep = steps.get(0);
-        final StepItemViewEntity firstItem = StepItemViewEntity.Builder.aStepItemViewEntity()
-                                                                       .withId(firstStep.getId())
-                                                                       .withShortDescription(firstStep.getShortDescription())
-                                                                       .withIsIntroduction(true)
-                                                                       .withIsSelected(isTablet)
-                                                                       .build();
-        items.add(firstItem);
-
-        for (int i = 1; i < steps.size(); i++) {
+        for (int i = 0; i < steps.size(); i++) {
             final Step step = steps.get(i);
             final StepItemViewEntity e = StepItemViewEntity.Builder.aStepItemViewEntity()
                                                                    .withId(step.getId())
@@ -136,6 +134,18 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
             items.add(e);
         }
 
-        return Flowable.just(new StepListViewEntity(items));
+        final StepItemViewEntity firstItem = StepItemViewEntity.Builder.aStepItemViewEntity()
+                                                                       .withStepItemViewEntity(items.get(0))
+                                                                       .withIsIntroduction(true)
+                                                                       .build();
+
+        final StepItemViewEntity selectedItem = StepItemViewEntity.Builder.aStepItemViewEntity()
+                                                                          .withStepItemViewEntity(items.get(selectedStepPosition))
+                                                                          .withIsSelected(isTablet)
+                                                                          .build();
+        items.set(0, firstItem);
+        items.set(selectedStepPosition, selectedItem);
+
+        return Flowable.just(new StepListViewEntity(items, selectedStepPosition));
     }
 }

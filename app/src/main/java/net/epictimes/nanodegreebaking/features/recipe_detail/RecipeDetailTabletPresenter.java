@@ -22,8 +22,8 @@ public class RecipeDetailTabletPresenter {
     private class ListPresenter extends MvpBasePresenter<StepListContract.View> implements StepListContract.Presenter {
 
         @Override
-        public void getRecipeSteps(final String recipeId) {
-            actualListPresenter.getRecipeSteps(recipeId);
+        public void getRecipeSteps(final String recipeId, final int selectedStepPosition) {
+            actualListPresenter.getRecipeSteps(recipeId, selectedStepPosition);
         }
 
         @Override

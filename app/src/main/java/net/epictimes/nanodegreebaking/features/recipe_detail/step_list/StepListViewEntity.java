@@ -9,11 +9,18 @@ public class StepListViewEntity {
 
     private List<StepItemViewEntity> stepItemViewEntityList;
 
-    public StepListViewEntity(final List<StepItemViewEntity> stepItemViewEntityList) {
+    private int selectedItemPosition;
+
+    public StepListViewEntity(final List<StepItemViewEntity> stepItemViewEntityList, final int selectedItemPosition) {
         this.stepItemViewEntityList = stepItemViewEntityList;
+        this.selectedItemPosition = selectedItemPosition;
     }
 
     public List<StepItemViewEntity> getStepItemViewEntityList() {
         return stepItemViewEntityList;
+    }
+
+    public int getSelectedItemPosition() {
+        return selectedItemPosition;
     }
 }
