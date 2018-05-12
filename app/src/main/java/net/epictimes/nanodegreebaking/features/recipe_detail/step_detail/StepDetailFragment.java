@@ -91,24 +91,26 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-
-        if (simpleExoPlayer != null) {
-            simpleExoPlayer.stop();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
         releaseVideoPlayer();
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(false);
+        }
+    }
+
+    @Override
     public void displayStepDetail(Step step) {
         textViewStepDescription.setText(step.getDescription());
+
+        releaseVideoPlayer();
 
         final String videoUrl = step.getVideoURL();
 
