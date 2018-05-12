@@ -46,7 +46,6 @@ dependencies {
 
     // Mosby
     implementation deps.mosby.core
-    implementation deps.mosby.viewState
 
     // Retrofit
     implementation deps.retrofit.base
