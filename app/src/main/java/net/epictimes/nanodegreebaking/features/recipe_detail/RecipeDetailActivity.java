@@ -88,7 +88,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     public void openStepDetail(final String stepId) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.contentFrame, StepDetailFragment.newInstance(recipeId, stepId))
+                .replace(R.id.contentFrame, StepDetailFragment.newInstance(recipeId, stepId))
                 .addToBackStack(null)
                 .commit();
     }

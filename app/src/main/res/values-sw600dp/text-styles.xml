@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Text"/>
+
+    <style name="Text.RecipeList">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:padding">32dp</item>
+    </style>
+
+    <style name="Text.StepList">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Text.StepDetail">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+</resources>

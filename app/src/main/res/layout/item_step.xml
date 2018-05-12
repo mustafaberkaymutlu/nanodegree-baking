@@ -15,8 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:padding="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="20sp"
+        style="@style/Text.StepList"
         tools:text="Sample Recipe"/>
 
 </android.support.v7.widget.CardView>

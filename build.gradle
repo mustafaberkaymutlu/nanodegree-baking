@@ -19,6 +19,7 @@ buildscript {
             'mosby': '3.1.0',
             'retrofit': '2.4.0',
             'glide': '4.6.1',
+            'exoplayer': '2.8.0',
     ]
 
     ext.deps = [
@@ -66,9 +67,13 @@ buildscript {
                     'junit': "junit:junit:4.12",
                     'mockito': "org.mockito:mockito-core:2.10.0",
             ],
-            'apacheCommon':[
+            'apacheCommon': [
                     'lang': "org.apache.commons:commons-lang3:3.7",
                     'collections': "org.apache.commons:commons-collections4:4.1",
+            ],
+            'exoplayer': [
+                    'core': "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}",
+                    'ui': "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}",
             ],
             'okHttpLogginInterceptor': 'com.squareup.okhttp3:logging-interceptor:3.9.0',
             'timber': 'com.jakewharton.timber:timber:4.6.1',

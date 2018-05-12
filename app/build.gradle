@@ -66,6 +66,10 @@ dependencies {
     implementation deps.rx.java
     implementation deps.rx.android
 
+    // ExoPlayer
+    implementation deps.exoplayer.core
+    implementation deps.exoplayer.ui
+
     // Leak Canary
     debugImplementation deps.leakCanary.real
     releaseImplementation deps.leakCanary.noOp

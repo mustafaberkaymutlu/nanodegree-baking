@@ -59,7 +59,7 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
                                                 .subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
                                                 .map(Recipe::getSteps)
-                                                .flatMap(StepListPresenter::mapToViewEntity)
+                                                .flatMap(this::mapToViewEntity)
                                                 .doOnNext(this::updateCache)
                                                 .subscribe(this::displaySteps, this::getRecipeError);
         compositeDisposable.add(disposable);
@@ -114,7 +114,7 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
         stepListViewEntity.getStepItemViewEntityList().set(newPost, updatedNewClickedStep);
     }
 
-    private static Publisher<? extends StepListViewEntity> mapToViewEntity(List<Step> steps) {
+    private Publisher<? extends StepListViewEntity> mapToViewEntity(List<Step> steps) {
         final List<StepItemViewEntity> items = new ArrayList<>();
 
         final Step firstStep = steps.get(0);
@@ -122,7 +122,7 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
                                                                        .withId(firstStep.getId())
                                                                        .withShortDescription(firstStep.getShortDescription())
                                                                        .withIsIntroduction(true)
-                                                                       .withIsSelected(true)
+                                                                       .withIsSelected(isTablet)
                                                                        .build();
         items.add(firstItem);
 
