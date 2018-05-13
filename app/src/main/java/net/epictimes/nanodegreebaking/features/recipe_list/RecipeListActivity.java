@@ -71,7 +71,7 @@ public class RecipeListActivity extends BaseActivity<RecipeListContract.View, Re
 
     @Override
     public void goToRecipeDetail(final Recipe recipe) {
-        final Intent detailIntent = RecipeDetailActivity.newIntent(this, recipe.getId());
+        final Intent detailIntent = RecipeDetailActivity.newIntent(this, recipe.getId(), recipe.getName());
         startActivity(detailIntent);
     }
 

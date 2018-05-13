@@ -13,6 +13,7 @@ import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
 import net.epictimes.nanodegreebaking.features.recipe_detail.step_detail.StepDetailFragment;
 import net.epictimes.nanodegreebaking.features.recipe_detail.step_list.StepListFragment;
+import net.epictimes.nanodegreebaking.util.Preconditions;
 
 import javax.inject.Inject;
 
@@ -27,6 +28,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements
         StepDetailFragment.Listener {
 
     private static final String KEY_RECIPE_ID = "recipe_id";
+    private static final String KEY_RECIPE_NAME = "recipe_name";
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
@@ -39,9 +41,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements
 
     private String recipeId;
 
-    public static Intent newIntent(@NonNull Context context, @NonNull String recipeId) {
+    public static Intent newIntent(@NonNull Context context, @NonNull String recipeId, @NonNull String recipeName) {
         final Intent intent = new Intent(context, RecipeDetailActivity.class);
         intent.putExtra(KEY_RECIPE_ID, recipeId);
+        intent.putExtra(KEY_RECIPE_NAME, recipeName);
         return intent;
     }
 
@@ -53,7 +56,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements
 
         toolbar = findViewById(R.id.toolbar);
 
-        recipeId = getIntent().getStringExtra(KEY_RECIPE_ID);
+        final Bundle extras = Preconditions.checkNotNull(getIntent().getExtras(), "Extras must not be null. ");
+        recipeId = extras.getString(KEY_RECIPE_ID);
+        final String recipeName = extras.getString(KEY_RECIPE_NAME);
+
+        toolbar.setTitle(recipeName);
 
         if (isTablet) {
             attachTabletFragments();
