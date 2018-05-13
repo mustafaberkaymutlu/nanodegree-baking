@@ -16,4 +16,8 @@ public class DeviceUtils {
     public static boolean isTablet(@NonNull Context context) {
         return context.getResources().getBoolean(R.bool.isTablet);
     }
+
+    public static boolean isLandscape(@NonNull Context context) {
+        return context.getResources().getBoolean(R.bool.isLandscape);
+    }
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
@@ -19,13 +21,17 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class RecipeDetailActivity extends AppCompatActivity
-        implements HasSupportFragmentInjector, StepListFragment.Listener {
+public class RecipeDetailActivity extends AppCompatActivity implements
+        HasSupportFragmentInjector,
+        StepListFragment.Listener,
+        StepDetailFragment.Listener {
 
     private static final String KEY_RECIPE_ID = "recipe_id";
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+
+    private Toolbar toolbar;
 
     @IsTablet
     @Inject
@@ -44,6 +50,8 @@ public class RecipeDetailActivity extends AppCompatActivity
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
+        toolbar = findViewById(R.id.toolbar);
 
         recipeId = getIntent().getStringExtra(KEY_RECIPE_ID);
 
@@ -100,5 +108,10 @@ public class RecipeDetailActivity extends AppCompatActivity
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentDispatchingAndroidInjector;
+    }
+
+    @Override
+    public void goFullScreen() {
+        toolbar.setVisibility(View.GONE);
     }
 }

@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.util.Util;
 
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.step.Step;
+import net.epictimes.nanodegreebaking.di.qualifier.IsLandscape;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
 import net.epictimes.nanodegreebaking.util.Preconditions;
 
@@ -47,11 +48,23 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     private long videoPosition;
     private String stepId;
 
+    private Listener fragmentListener;
+
     @Nullable
     private SimpleExoPlayer simpleExoPlayer;
 
     @Inject
     StepDetailContract.Presenter stepDetailPresenter;
+
+    @IsLandscape
+    @Inject
+    boolean isLandscape;
+
+    public interface Listener {
+
+        void goFullScreen();
+
+    }
 
     public static StepDetailFragment newInstance(@NonNull final String recipeId, @Nullable String stepId) {
         final StepDetailFragment stepDetailFragment = new StepDetailFragment();
@@ -72,6 +85,12 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     public void onAttach(final Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
+
+        try {
+            fragmentListener = (Listener) context;
+        } catch (ClassCastException ignored) {
+            throw new ClassCastException(context.toString() + " must implement Listener");
+        }
     }
 
     @Nullable
@@ -98,6 +117,17 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
             videoPosition = savedInstanceState.getLong(ARG_VIDEO_POSITION, 0);
         } else {
             stepId = initialStepId;
+        }
+
+        if (isLandscape) {
+            fragmentListener.goFullScreen();
+
+            playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
 
         presenter.displayStep(recipeId, stepId);
