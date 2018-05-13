@@ -138,12 +138,12 @@ public class StepListPresenter extends MvpBasePresenter<StepListContract.View> i
                                                                        .withStepItemViewEntity(items.get(0))
                                                                        .withIsIntroduction(true)
                                                                        .build();
+        items.set(0, firstItem);
 
         final StepItemViewEntity selectedItem = StepItemViewEntity.Builder.aStepItemViewEntity()
                                                                           .withStepItemViewEntity(items.get(selectedStepPosition))
                                                                           .withIsSelected(isTablet)
                                                                           .build();
-        items.set(0, firstItem);
         items.set(selectedStepPosition, selectedItem);
 
         return Flowable.just(new StepListViewEntity(items, selectedStepPosition));
