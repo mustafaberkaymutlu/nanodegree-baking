@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -18,18 +17,16 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
+import dagger.android.support.AndroidSupportInjection;
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.di.qualifier.IsLandscape;
+import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
 import net.epictimes.nanodegreebaking.util.Preconditions;
-
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
-
-import dagger.android.support.AndroidSupportInjection;
 
 /**
  Created by Mustafa Berkay Mutlu on 24.04.18.
@@ -55,6 +52,10 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
     @Inject
     StepDetailContract.Presenter stepDetailPresenter;
+
+    @IsTablet
+    @Inject
+    boolean isTablet;
 
     @IsLandscape
     @Inject
@@ -119,7 +120,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
             stepId = initialStepId;
         }
 
-        if (isLandscape) {
+        if (isLandscape && !isTablet) {
             fragmentListener.goFullScreen();
 
             playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE

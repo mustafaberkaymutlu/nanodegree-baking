@@ -8,12 +8,14 @@ import java.util.List;
  Created by Mustafa Berkay Mutlu on 07.05.18.
  */
 public class StepListDiffUtilCallback extends DiffUtil.Callback {
+    private final Comparator comparator;
+    private final List<Visitable> oldItems;
+    private final List<Visitable> newItems;
 
-    private final List<StepItemViewEntity> oldItems;
-    private final List<StepItemViewEntity> newItems;
-
-    StepListDiffUtilCallback(final List<StepItemViewEntity> oldItems,
-                             final List<StepItemViewEntity> newItems) {
+    StepListDiffUtilCallback(final Comparator comparator,
+                             final List<Visitable> oldItems,
+                             final List<Visitable> newItems) {
+        this.comparator = comparator;
         this.oldItems = oldItems;
         this.newItems = newItems;
     }
@@ -30,19 +32,13 @@ public class StepListDiffUtilCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
-        return oldItems.get(oldItemPosition).getId().equals(newItems.get(newItemPosition).getId());
+        return comparator.areItemsTheSame(oldItems.get(oldItemPosition),
+                newItems.get(newItemPosition));
     }
 
     @Override
     public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
-        final StepItemViewEntity oldItem = oldItems.get(oldItemPosition);
-        final StepItemViewEntity newItem = newItems.get(newItemPosition);
-
-        return oldItem.getId().equals(newItem.getId())
-                && oldItem.isSelected() == newItem.isSelected()
-                && oldItem.isIntroduction() == newItem.isIntroduction()
-                && oldItem.getPosition() == newItem.getPosition()
-                && oldItem.getShortDescription().equals(newItem.getShortDescription());
-
+        return comparator.areContentsTheSame(oldItems.get(oldItemPosition),
+                newItems.get(newItemPosition));
     }
 }

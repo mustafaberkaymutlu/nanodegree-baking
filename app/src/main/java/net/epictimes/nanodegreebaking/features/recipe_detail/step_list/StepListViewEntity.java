@@ -5,22 +5,26 @@ import java.util.List;
 /**
  Created by Mustafa Berkay Mutlu on 03.05.18.
  */
-public class StepListViewEntity {
+class StepListViewEntity {
 
-    private List<StepItemViewEntity> stepItemViewEntityList;
+    private List<Visitable> items;
 
     private int selectedItemPosition;
 
-    public StepListViewEntity(final List<StepItemViewEntity> stepItemViewEntityList, final int selectedItemPosition) {
-        this.stepItemViewEntityList = stepItemViewEntityList;
+    StepListViewEntity(final List<Visitable> items, final int selectedItemPosition) {
+        this.items = items;
         this.selectedItemPosition = selectedItemPosition;
     }
 
-    public List<StepItemViewEntity> getStepItemViewEntityList() {
-        return stepItemViewEntityList;
+    public List<Visitable> getItems() {
+        return items;
     }
 
     public int getSelectedItemPosition() {
         return selectedItemPosition;
+    }
+
+    public Visitable getSelectedItem() {
+        return items.get(selectedItemPosition);
     }
 }

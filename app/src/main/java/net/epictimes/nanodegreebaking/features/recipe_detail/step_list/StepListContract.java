@@ -19,7 +19,7 @@ public interface StepListContract {
 
     interface Presenter extends MvpPresenter<View> {
 
-        void getRecipeSteps(String recipeId, final int selectedStepPosition);
+        void getRecipeSteps(String recipeId, final int initialSelectedStepPosition);
 
         void userClickedRecipeStep(final String recipeId, StepItemViewEntity clickedStep);
 

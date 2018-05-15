@@ -3,7 +3,7 @@ package net.epictimes.nanodegreebaking.features.recipe_detail.step_list;
 /**
  Created by Mustafa Berkay Mutlu on 02.05.18.
  */
-public class StepItemViewEntity {
+public class StepItemViewEntity implements Visitable {
 
     private String id;
 
@@ -33,6 +33,11 @@ public class StepItemViewEntity {
 
     public boolean isSelected() {
         return isSelected;
+    }
+
+    @Override
+    public int type(TypeFactory typeFactory) {
+        return typeFactory.type(this);
     }
 
     public static final class Builder {

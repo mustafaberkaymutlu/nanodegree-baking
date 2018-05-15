@@ -15,53 +15,78 @@ import java.util.List;
 /**
  Created by Mustafa Berkay Mutlu on 28.04.18.
  */
-class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepViewHolder> {
+class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerViewAdapter.AbstractViewHolder> {
 
-    private final List<StepItemViewEntity> stepList = new ArrayList<>();
+    private final List<Visitable> elements = new ArrayList<>();
+
+    private final TypeFactory typeFactory;
+    private final Comparator comparator;
 
     @Nullable
-    private StepClickListener stepClickListener;
+    private VisitableClickListener visitableClickListener;
 
-    interface StepClickListener {
+    StepRecyclerViewAdapter(TypeFactory typeFactory, Comparator comparator) {
+        this.typeFactory = typeFactory;
+        this.comparator = comparator;
+    }
 
-        void onStepClicked(@NonNull StepItemViewEntity step);
+    interface VisitableClickListener {
+
+        void onVisitableClicked(@NonNull Visitable visitable);
 
     }
 
     @NonNull
     @Override
-    public StepViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+    public StepRecyclerViewAdapter.AbstractViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         final Context context = parent.getContext();
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(StepViewHolder.LAYOUT_ID, parent, false);
-        return new StepViewHolder(view, adapterPosition -> {
-            if (stepClickListener != null) {
-                stepClickListener.onStepClicked(stepList.get(adapterPosition));
-            }
-        });
+        final View rootView = inflater.inflate(viewType, parent, false);
+        return typeFactory.createViewHolder(rootView, viewType, this::onItemClicked);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final StepViewHolder holder, final int position) {
-        final StepItemViewEntity step = stepList.get(position);
-        holder.bind(step);
+    public void onBindViewHolder(@NonNull final StepRecyclerViewAdapter.AbstractViewHolder holder, final int position) {
+        holder.bind(elements.get(position));
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return elements.get(position).type(typeFactory);
     }
 
     @Override
     public int getItemCount() {
-        return stepList.size();
+        return elements.size();
     }
 
-    void update(@NonNull final List<StepItemViewEntity> newItems) {
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new StepListDiffUtilCallback(stepList, newItems));
+    private void onItemClicked(int adapterPosition) {
+        if (visitableClickListener != null) {
+            visitableClickListener.onVisitableClicked(elements.get(adapterPosition));
+        }
+    }
 
-        this.stepList.clear();
-        this.stepList.addAll(newItems);
+    void update(@NonNull final List<Visitable> newItems) {
+        final StepListDiffUtilCallback diffUtilCallback = new StepListDiffUtilCallback(comparator, elements, newItems);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtilCallback);
+
+        this.elements.clear();
+        this.elements.addAll(newItems);
 
         diffResult.dispatchUpdatesTo(this);
     }
 
-    void setItemClickListener(@Nullable final StepClickListener stepClickListener) {
-        this.stepClickListener = stepClickListener;
+    public void setVisitableClickListener(@Nullable VisitableClickListener visitableClickListener) {
+        this.visitableClickListener = visitableClickListener;
+    }
+
+    static abstract class AbstractViewHolder<T extends Visitable> extends RecyclerView.ViewHolder {
+
+        AbstractViewHolder(View view) {
+            super(view);
+        }
+
+        public abstract void bind(T element);
+
     }
 }

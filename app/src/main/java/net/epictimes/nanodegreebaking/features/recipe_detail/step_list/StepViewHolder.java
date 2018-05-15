@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.Gravity;
@@ -19,7 +18,7 @@ import net.epictimes.nanodegreebaking.util.SpannableStringUtil;
 /**
  Created by Mustafa Berkay Mutlu on 28.04.18.
  */
-class StepViewHolder extends RecyclerView.ViewHolder {
+class StepViewHolder extends StepRecyclerViewAdapter.AbstractViewHolder<StepItemViewEntity> {
 
     static final int LAYOUT_ID = R.layout.item_step;
 
@@ -35,7 +34,8 @@ class StepViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(v -> itemClickListener.onItemClicked(getAdapterPosition()));
     }
 
-    void bind(@NonNull StepItemViewEntity step) {
+    @Override
+    public void bind(@NonNull StepItemViewEntity step) {
         final String wholeDesc;
 
         if (step.isIntroduction()) {

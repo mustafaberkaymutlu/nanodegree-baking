@@ -19,6 +19,8 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
+import static net.epictimes.nanodegreebaking.features.recipe_detail.step_list.StepListPresenter.INVALID_SELECTED_ITEM_POSITION;
+
 /**
  Created by Mustafa Berkay Mutlu on 24.04.18.
  */
@@ -31,7 +33,16 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
     private Listener fragmentListener;
     private StepRecyclerViewAdapter adapter;
 
-    private int selectedItemPosition;
+    private int selectedItemPosition = INVALID_SELECTED_ITEM_POSITION;
+
+    @Inject
+    StepListContract.Presenter stepListPresenter;
+
+    @Inject
+    TypeFactory typeFactory;
+
+    @Inject
+    Comparator comparator;
 
     public interface Listener {
 
@@ -49,9 +60,6 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
         stepListFragment.setArguments(args);
         return stepListFragment;
     }
-
-    @Inject
-    StepListContract.Presenter stepListPresenter;
 
     @NonNull
     @Override
@@ -87,15 +95,15 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
         final String recipeId = args.getString(ARG_RECIPE_ID);
 
         if (savedInstanceState != null) {
-            selectedItemPosition = savedInstanceState.getInt(ARG_SELECTED_ITEM_POSITION, 0);
+            selectedItemPosition = savedInstanceState.getInt(ARG_SELECTED_ITEM_POSITION, INVALID_SELECTED_ITEM_POSITION);
         }
 
         final RecyclerView recyclerViewSteps = view.findViewById(R.id.recyclerViewSteps);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new StepRecyclerViewAdapter();
+        adapter = new StepRecyclerViewAdapter(typeFactory, comparator);
 
-        adapter.setItemClickListener(step -> presenter.userClickedRecipeStep(recipeId, step));
+        adapter.setVisitableClickListener(visitable -> presenter.userClickedRecipeStep(recipeId, (StepItemViewEntity) visitable));
 
         recyclerViewSteps.setLayoutManager(linearLayoutManager);
         recyclerViewSteps.setAdapter(adapter);
@@ -115,7 +123,7 @@ public class StepListFragment extends BaseFragment<StepListContract.View, StepLi
     public void displaySteps(final StepListViewEntity stepListViewEntity) {
         this.selectedItemPosition = stepListViewEntity.getSelectedItemPosition();
 
-        adapter.update(stepListViewEntity.getStepItemViewEntityList());
+        adapter.update(stepListViewEntity.getItems());
     }
 
     @Override
