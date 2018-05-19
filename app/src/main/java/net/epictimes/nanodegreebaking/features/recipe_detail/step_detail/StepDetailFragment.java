@@ -2,6 +2,7 @@ package net.epictimes.nanodegreebaking.features.recipe_detail.step_detail;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +44,8 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     private static final String ARG_VIDEO_POSITION = "video_position";
     private static final String ARG_IS_VIDEO_PLAYING = "is_video_paying";
 
+    private static final boolean INITIAL_IS_VIDEO_PLAYING = true;
+
     @Nullable
     private TextView textViewStepDescription;
     private PlayerView playerView;
@@ -50,6 +53,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     private long videoPosition;
     private boolean isVideoPlaying;
     private String stepId;
+    private String videoUrl;
 
     private Listener fragmentListener;
 
@@ -122,10 +126,10 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         if (savedInstanceState != null) {
             stepId = savedInstanceState.getString(ARG_STEP_ID, initialStepId);
             videoPosition = savedInstanceState.getLong(ARG_VIDEO_POSITION, 0);
-            isVideoPlaying = savedInstanceState.getBoolean(ARG_IS_VIDEO_PLAYING, true);
+            isVideoPlaying = savedInstanceState.getBoolean(ARG_IS_VIDEO_PLAYING, INITIAL_IS_VIDEO_PLAYING);
         } else {
             stepId = initialStepId;
-            isVideoPlaying = true;
+            isVideoPlaying = INITIAL_IS_VIDEO_PLAYING;
         }
 
         if (isLandscape && !isTablet) {
@@ -139,7 +143,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
 
-        presenter.displayStep(recipeId, stepId);
+        presenter.getStep(recipeId, stepId);
     }
 
     @Override
@@ -154,44 +158,72 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStart() {
+        super.onStart();
 
-        releaseVideoPlayer();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            configurePlayerView();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            configurePlayerView();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            releaseVideoPlayer();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        if (simpleExoPlayer != null) {
-            simpleExoPlayer.setPlayWhenReady(false);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            releaseVideoPlayer();
         }
     }
 
     @Override
     public void displayStepDetail(Step step) {
         this.stepId = step.getId();
+        this.videoUrl = step.getVideoURL();
 
         if (textViewStepDescription != null) {
             textViewStepDescription.setText(step.getDescription());
         }
 
+        configurePlayerView();
+    }
+
+    @Override
+    public void displayStepError() {
+        Toast.makeText(getContext(), R.string.error_step, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void resetVideoState() {
         releaseVideoPlayer();
+        videoPosition = 0;
+        isVideoPlaying = INITIAL_IS_VIDEO_PLAYING;
+    }
 
-        final String videoUrl = step.getVideoURL();
-
+    private void configurePlayerView() {
         if (StringUtils.isBlank(videoUrl)) {
             playerView.setVisibility(View.GONE);
         } else {
             playerView.setVisibility(View.VISIBLE);
             initializeVideoPlayer(videoUrl);
         }
-    }
-
-    @Override
-    public void displayStepError() {
-        Toast.makeText(getContext(), R.string.error_step, Toast.LENGTH_SHORT).show();
     }
 
     private void initializeVideoPlayer(@NonNull String videoUrl) {
@@ -217,10 +249,10 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
     private void releaseVideoPlayer() {
         if (simpleExoPlayer != null) {
+            videoPosition = simpleExoPlayer.getCurrentPosition();
+            isVideoPlaying = simpleExoPlayer.getPlayWhenReady();
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
-            videoPosition = 0;
-            isVideoPlaying = false;
             simpleExoPlayer = null;
         }
     }

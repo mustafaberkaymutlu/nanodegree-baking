@@ -17,12 +17,14 @@ public interface StepDetailContract {
 
         void displayStepError();
 
+        void resetVideoState();
     }
 
     interface Presenter extends MvpPresenter<View> {
 
-        void displayStep(final String recipeId, final String stepId);
+        void getStep(final String recipeId, final String stepId);
 
+        void resetVideoState();
     }
 
 }

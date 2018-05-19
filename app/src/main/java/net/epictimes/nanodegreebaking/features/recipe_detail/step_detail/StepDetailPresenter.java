@@ -33,7 +33,7 @@ public class StepDetailPresenter extends MvpBasePresenter<StepDetailContract.Vie
     }
 
     @Override
-    public void displayStep(final String recipeId, final String stepId) {
+    public void getStep(final String recipeId, final String stepId) {
         final Disposable disposable;
 
         final Flowable<Step> stepFlowable = repository.getRecipe(recipeId)
@@ -53,6 +53,11 @@ public class StepDetailPresenter extends MvpBasePresenter<StepDetailContract.Vie
         }
 
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void resetVideoState() {
+        ifViewAttached(StepDetailContract.View::resetVideoState);
     }
 
     @Override

@@ -29,7 +29,8 @@ public class RecipeDetailTabletPresenter {
         @Override
         public void userClickedRecipeStep(final String recipeId, final StepItemViewEntity clickedStep) {
             actualListPresenter.userClickedRecipeStep(recipeId, clickedStep);
-            actualDetailPresenter.displayStep(recipeId, clickedStep.getId());
+            actualDetailPresenter.resetVideoState();
+            actualDetailPresenter.getStep(recipeId, clickedStep.getId());
         }
 
         @Override
@@ -57,8 +58,13 @@ public class RecipeDetailTabletPresenter {
     private class DetailPresenter extends MvpBasePresenter<StepDetailContract.View> implements StepDetailContract.Presenter {
 
         @Override
-        public void displayStep(final String recipeId, final String stepId) {
-            actualDetailPresenter.displayStep(recipeId, stepId);
+        public void getStep(final String recipeId, final String stepId) {
+            actualDetailPresenter.getStep(recipeId, stepId);
+        }
+
+        @Override
+        public void resetVideoState() {
+            actualDetailPresenter.resetVideoState();
         }
 
         @Override
