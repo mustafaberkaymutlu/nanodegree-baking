@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import com.squareup.leakcanary.LeakCanary;
 
 import net.epictimes.nanodegreebaking.di.DaggerSingletonComponent;
+import net.epictimes.nanodegreebaking.di.SingletonComponent;
 
 import javax.inject.Inject;
 
@@ -34,6 +35,9 @@ public class BakingApp extends Application implements
 
     @Inject
     DispatchingAndroidInjector<BroadcastReceiver> dispatchingBroadcastReceiverInjector;
+
+    @Inject
+    SingletonComponent singletonComponent;
 
     @Override
     public void onCreate() {
@@ -62,6 +66,10 @@ public class BakingApp extends Application implements
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+    }
+
+    public SingletonComponent getSingletonComponent() {
+        return singletonComponent;
     }
 
     @Override

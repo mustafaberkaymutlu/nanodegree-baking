@@ -4,6 +4,7 @@ import net.epictimes.nanodegreebaking.data.model.ingredient.IngredientMapper;
 import net.epictimes.nanodegreebaking.data.model.recipe.RecipeMapper;
 import net.epictimes.nanodegreebaking.data.model.step.StepMapper;
 import net.epictimes.nanodegreebaking.di.qualifier.Repository;
+import net.epictimes.nanodegreebaking.util.SimpleIdlingResource;
 
 import javax.inject.Singleton;
 
@@ -38,6 +39,12 @@ public abstract class RepositoryModule {
     @Provides
     static IngredientMapper provideIngredientMapper() {
         return new IngredientMapper();
+    }
+
+    @Singleton
+    @Provides
+    static SimpleIdlingResource provideSimpleIdlingResource() {
+        return new SimpleIdlingResource();
     }
 
 }

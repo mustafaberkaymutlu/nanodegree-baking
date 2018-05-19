@@ -82,4 +82,20 @@ dependencies {
 
     // Unit tests
     testImplementation deps.test.junit
+
+    // Espresso tests
+    implementation deps.espresso.idlingResource
+
+    androidTestCompile deps.support.testRules
+    androidTestCompile deps.support.testRunner
+
+    androidTestCompile deps.espresso.core, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile deps.espresso.contrib, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 }

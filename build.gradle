@@ -20,6 +20,7 @@ buildscript {
             'retrofit': '2.4.0',
             'glide': '4.6.1',
             'exoplayer': '2.8.0',
+            'espresso': '3.0.2',
     ]
 
     ext.deps = [
@@ -33,6 +34,8 @@ buildscript {
                     'cardView': "com.android.support:cardview-v7:${versions.supportLibrary}",
                     'palette': "com.android.support:palette-v7:${versions.supportLibrary}",
                     'constraintLayout': "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
+                    'testRules': "com.android.support.test:rules:1.0.2",
+                    'testRunner': "com.android.support.test:runner:1.0.2"
             ],
             'dagger': [
                     'runtime': "com.google.dagger:dagger:${versions.dagger}",
@@ -74,6 +77,12 @@ buildscript {
             'exoplayer': [
                     'core': "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}",
                     'ui': "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}",
+            ],
+            'espresso': [
+                    'core': "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+                    'contrib': "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
+                    'idlingResource': "com.android.support.test.espresso:espresso-idling-resource:${versions.espresso}"
+
             ],
             'okHttpLogginInterceptor': 'com.squareup.okhttp3:logging-interceptor:3.9.0',
             'timber': 'com.jakewharton.timber:timber:4.6.1',

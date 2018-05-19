@@ -1,8 +1,11 @@
 package net.epictimes.nanodegreebaking.di;
 
+import android.support.annotation.VisibleForTesting;
+
 import net.epictimes.nanodegreebaking.BakingApp;
 import net.epictimes.nanodegreebaking.data.RepositoryModule;
 import net.epictimes.nanodegreebaking.data.remote.RemoteDataSourceModule;
+import net.epictimes.nanodegreebaking.util.SimpleIdlingResource;
 
 import javax.inject.Singleton;
 
@@ -34,5 +37,8 @@ public interface SingletonComponent {
     }
 
     void inject(BakingApp application);
+
+    @VisibleForTesting
+    SimpleIdlingResource simpleIdlingResource();
 
 }

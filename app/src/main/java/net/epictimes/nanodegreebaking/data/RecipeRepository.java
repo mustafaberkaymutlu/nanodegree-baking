@@ -2,6 +2,7 @@ package net.epictimes.nanodegreebaking.data;
 
 import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
 import net.epictimes.nanodegreebaking.di.qualifier.RemoteDataSource;
+import net.epictimes.nanodegreebaking.util.SimpleIdlingResource;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 
 /**
- Created by Mustafa Berkay Mutlu on 22.04.18.
+ * Created by Mustafa Berkay Mutlu on 22.04.18.
  */
 public class RecipeRepository implements RecipeDataSource {
 
@@ -23,27 +24,33 @@ public class RecipeRepository implements RecipeDataSource {
     RecipeDataSource remoteDataSource;
 
     @Inject
+    SimpleIdlingResource simpleIdlingResource;
+
+    @Inject
     RecipeRepository() {
     }
 
     @Override
     public Flowable<List<Recipe>> getRecipes() {
-        return remoteDataSource.getRecipes()
-                               .flatMapIterable(recipes -> recipes)
-                               .doOnNext(this::updateCache)
-                               .toList()
-                               .toFlowable();
+        return remoteDataSource
+                .getRecipes()
+                .flatMapIterable(recipes -> recipes)
+                .doOnNext(this::updateCache)
+                .doOnSubscribe(subscription -> simpleIdlingResource.setIdleState(false))
+                .doOnComplete(() -> simpleIdlingResource.setIdleState(true))
+                .toList()
+                .toFlowable();
     }
 
     @Override
     public Flowable<Recipe> getRecipe(final String recipeId) {
-        final Recipe item = recipeCache.get(recipeId);
-
-        if (item == null) {
-            return Flowable.error(() -> new NullPointerException("Cannot found recipe with id: " + recipeId));
+        if (recipeCache.containsKey(recipeId)) {
+            return Flowable.just(recipeCache.get(recipeId));
+        } else {
+            return getRecipes()
+                    .flatMapIterable(recipes -> recipes)
+                    .filter(recipe -> recipe.getId().equals(recipeId));
         }
-
-        return Flowable.just(item);
     }
 
     private void updateCache(final Recipe recipe) {
