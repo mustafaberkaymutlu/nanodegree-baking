@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -17,16 +18,19 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import dagger.android.support.AndroidSupportInjection;
+
 import net.epictimes.nanodegreebaking.R;
 import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.di.qualifier.IsLandscape;
 import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
 import net.epictimes.nanodegreebaking.util.Preconditions;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  Created by Mustafa Berkay Mutlu on 24.04.18.
@@ -37,12 +41,14 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     private static final String ARG_RECIPE_ID = "recipe_id";
     private static final String ARG_STEP_ID = "step_id";
     private static final String ARG_VIDEO_POSITION = "video_position";
+    private static final String ARG_IS_VIDEO_PLAYING = "is_video_paying";
 
     @Nullable
     private TextView textViewStepDescription;
     private PlayerView playerView;
 
     private long videoPosition;
+    private boolean isVideoPlaying;
     private String stepId;
 
     private Listener fragmentListener;
@@ -116,8 +122,10 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         if (savedInstanceState != null) {
             stepId = savedInstanceState.getString(ARG_STEP_ID, initialStepId);
             videoPosition = savedInstanceState.getLong(ARG_VIDEO_POSITION, 0);
+            isVideoPlaying = savedInstanceState.getBoolean(ARG_IS_VIDEO_PLAYING, true);
         } else {
             stepId = initialStepId;
+            isVideoPlaying = true;
         }
 
         if (isLandscape && !isTablet) {
@@ -141,6 +149,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         if (simpleExoPlayer != null) {
             outState.putString(ARG_STEP_ID, stepId);
             outState.putLong(ARG_VIDEO_POSITION, simpleExoPlayer.getCurrentPosition());
+            outState.putBoolean(ARG_IS_VIDEO_PLAYING, simpleExoPlayer.getPlayWhenReady());
         }
     }
 
@@ -202,7 +211,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
                 .createMediaSource(videoUri);
 
         simpleExoPlayer.prepare(mediaSource);
-        simpleExoPlayer.setPlayWhenReady(true);
+        simpleExoPlayer.setPlayWhenReady(isVideoPlaying);
         simpleExoPlayer.seekTo(videoPosition);
     }
 
@@ -211,6 +220,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
             videoPosition = 0;
+            isVideoPlaying = false;
             simpleExoPlayer = null;
         }
     }
