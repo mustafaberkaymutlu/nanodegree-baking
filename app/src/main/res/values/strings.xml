@@ -3,4 +3,6 @@
     <string name="error_steps">Error while displaying steps</string>
     <string name="error_step">Error while displaying step</string>
     <string name="error_recipes">Error while displaying recipes</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_tip">Select the recipe you want to display in widget</string>
 </resources>

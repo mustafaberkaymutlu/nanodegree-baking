@@ -4,6 +4,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import net.epictimes.nanodegreebaking.data.RecipeDataSource;
 import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
+import net.epictimes.nanodegreebaking.di.qualifier.IsWidgetConfiguration;
 import net.epictimes.nanodegreebaking.di.qualifier.Repository;
 
 import java.util.List;
@@ -25,6 +26,10 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
     @Inject
     RecipeDataSource recipeRepository;
 
+    @IsWidgetConfiguration
+    @Inject
+    boolean isWidgetConfiguration;
+
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
@@ -41,7 +46,13 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
 
     @Override
     public void userClickedRecipe(final Recipe recipe) {
-        ifViewAttached(view -> view.goToRecipeDetail(recipe));
+        ifViewAttached(view -> {
+            if (isWidgetConfiguration) {
+                view.selectRecipeForWidget(recipe);
+            } else {
+                view.goToRecipeDetail(recipe);
+            }
+        });
     }
 
     @Override
@@ -57,6 +68,13 @@ class RecipeListPresenter extends MvpBasePresenter<RecipeListContract.View>
 
     private void getRecipesError(Throwable throwable) {
         Timber.e(throwable);
-        ifViewAttached(RecipeListContract.View::displayRecipesError);
+
+        ifViewAttached(view -> {
+            if (isWidgetConfiguration) {
+                view.endWidgetConfigurationWithError();
+            } else {
+                view.displayRecipesError();
+            }
+        });
     }
 }

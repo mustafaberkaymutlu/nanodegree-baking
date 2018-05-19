@@ -4,7 +4,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import net.epictimes.nanodegreebaking.data.model.recipe.Recipe;
-import net.epictimes.nanodegreebaking.data.model.recipe.RecipeRaw;
 
 import java.util.List;
 
@@ -20,6 +19,10 @@ public interface RecipeListContract {
         void displayRecipesError();
 
         void goToRecipeDetail(Recipe recipe);
+
+        void selectRecipeForWidget(Recipe recipe);
+
+        void endWidgetConfigurationWithError();
 
     }
 

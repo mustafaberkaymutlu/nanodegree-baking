@@ -19,7 +19,9 @@ import dagger.android.AndroidInjectionModule;
         RemoteDataSourceModule.class,
         RepositoryModule.class,
         AndroidInjectionModule.class,
-        ActivityBuilderModule.class})
+        ActivityBuilderModule.class,
+        ServiceBuilderModule.class,
+        BroadcastReceiverBuilderModule.class})
 public interface SingletonComponent {
 
     @Component.Builder

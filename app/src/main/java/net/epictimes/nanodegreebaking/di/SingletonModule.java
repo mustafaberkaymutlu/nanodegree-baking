@@ -1,8 +1,12 @@
 package net.epictimes.nanodegreebaking.di;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import net.epictimes.nanodegreebaking.BakingApp;
 import net.epictimes.nanodegreebaking.di.qualifier.IsLandscape;
 import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
+import net.epictimes.nanodegreebaking.di.qualifier.WidgetSharedPrefs;
 import net.epictimes.nanodegreebaking.util.DeviceUtils;
 
 import javax.inject.Singleton;
@@ -27,6 +31,13 @@ class SingletonModule {
     @Provides
     boolean provideIsLandscape(BakingApp bakingApp) {
         return DeviceUtils.isLandscape(bakingApp);
+    }
+
+    @WidgetSharedPrefs
+    @Singleton
+    @Provides
+    SharedPreferences provideSharedPreferences(BakingApp bakingApp) {
+        return bakingApp.getSharedPreferences("widget_prefs", Context.MODE_PRIVATE);
     }
 
 }
