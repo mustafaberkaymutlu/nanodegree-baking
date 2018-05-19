@@ -69,6 +69,10 @@ dependencies {
     implementation deps.exoplayer.core
     implementation deps.exoplayer.ui
 
+    // Glide
+    implementation deps.glide.runtime
+    annotationProcessor deps.glide.compiler
+
     // Leak Canary
     debugImplementation deps.leakCanary.real
     releaseImplementation deps.leakCanary.noOp

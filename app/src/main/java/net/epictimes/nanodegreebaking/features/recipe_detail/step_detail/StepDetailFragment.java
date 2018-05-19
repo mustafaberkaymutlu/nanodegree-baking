@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import net.epictimes.nanodegreebaking.data.model.step.Step;
 import net.epictimes.nanodegreebaking.di.qualifier.IsLandscape;
 import net.epictimes.nanodegreebaking.di.qualifier.IsTablet;
 import net.epictimes.nanodegreebaking.features.BaseFragment;
+import net.epictimes.nanodegreebaking.util.GlideApp;
 import net.epictimes.nanodegreebaking.util.Preconditions;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +36,7 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
- Created by Mustafa Berkay Mutlu on 24.04.18.
+ * Created by Mustafa Berkay Mutlu on 24.04.18.
  */
 public class StepDetailFragment extends BaseFragment<StepDetailContract.View, StepDetailContract.Presenter>
         implements StepDetailContract.View {
@@ -49,6 +51,8 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     @Nullable
     private TextView textViewStepDescription;
     private PlayerView playerView;
+    @Nullable
+    private ImageView imageViewThumbnail;
 
     private long videoPosition;
     private boolean isVideoPlaying;
@@ -118,6 +122,7 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
 
         textViewStepDescription = view.findViewById(R.id.textViewStepDescription);
         playerView = view.findViewById(R.id.playerView);
+        imageViewThumbnail = view.findViewById(R.id.imageViewThumbnail);
 
         final Bundle args = Preconditions.checkNotNull(getArguments(), "Arguments must not be null. ");
         final String recipeId = args.getString(ARG_RECIPE_ID);
@@ -203,6 +208,8 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         }
 
         configurePlayerView();
+
+        configureImageViewThumbnail(step.getThumbnailURL());
     }
 
     @Override
@@ -223,6 +230,22 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
         } else {
             playerView.setVisibility(View.VISIBLE);
             initializeVideoPlayer(videoUrl);
+        }
+    }
+
+    private void configureImageViewThumbnail(@Nullable String thumbnailUrl) {
+        if (imageViewThumbnail == null) {
+            return;
+        }
+
+        if (StringUtils.isBlank(thumbnailUrl)) {
+            imageViewThumbnail.setVisibility(View.GONE);
+        } else {
+            GlideApp.with(this)
+                    .load(thumbnailUrl)
+                    .into(imageViewThumbnail);
+
+            imageViewThumbnail.setVisibility(View.VISIBLE);
         }
     }
 
