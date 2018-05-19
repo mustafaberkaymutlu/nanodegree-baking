@@ -8,9 +8,10 @@ import net.epictimes.nanodegreebaking.R;
 /**
  Created by Mustafa Berkay Mutlu on 24.04.18.
  */
-public class DeviceUtils {
+public final class DeviceUtils {
 
     private DeviceUtils() {
+        throw new AssertionError("No instances for you!");
     }
 
     public static boolean isTablet(@NonNull Context context) {

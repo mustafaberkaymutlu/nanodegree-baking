@@ -7,9 +7,10 @@ import android.text.Spanned;
 /**
  Created by Mustafa Berkay Mutlu on 03.05.18.
  */
-public class SpannableStringUtil {
+public final class SpannableStringUtil {
 
     private SpannableStringUtil() {
+        throw new AssertionError("No instances for you!");
     }
 
     /**

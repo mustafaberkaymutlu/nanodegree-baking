@@ -5,9 +5,10 @@ import android.support.annotation.Nullable;
 /**
  * Created by Mustafa Berkay Mutlu on 12.05.18.
  */
-public class Preconditions {
+public final class Preconditions {
 
     private Preconditions() {
+        throw new AssertionError("No instances for you!");
     }
 
     /**
