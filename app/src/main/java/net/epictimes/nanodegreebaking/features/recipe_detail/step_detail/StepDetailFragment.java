@@ -155,8 +155,9 @@ public class StepDetailFragment extends BaseFragment<StepDetailContract.View, St
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putString(ARG_STEP_ID, stepId);
+
         if (simpleExoPlayer != null) {
-            outState.putString(ARG_STEP_ID, stepId);
             outState.putLong(ARG_VIDEO_POSITION, simpleExoPlayer.getCurrentPosition());
             outState.putBoolean(ARG_IS_VIDEO_PLAYING, simpleExoPlayer.getPlayWhenReady());
         }
